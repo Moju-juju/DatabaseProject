@@ -143,7 +143,6 @@ class BikeProducts(Base):
 
 
 class CartItems(Base):
-    #bike_prod_id = models.ForeignKey(BikeProducts, on_delete=models.CASCADE, blank=True, default=1)
     bike_prod_id = models.ForeignKey(BikeProducts, on_delete=models.CASCADE, blank=True, default=1)
     quantity_sold = models.PositiveIntegerField(default=1)
 

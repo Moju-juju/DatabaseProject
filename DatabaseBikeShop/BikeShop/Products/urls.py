@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views #import the views to access the functions for these urls
 
-#All Url patterns relative to projects go here
+#All Url patterns relative to products go here
 
 app_name = 'products'
 
