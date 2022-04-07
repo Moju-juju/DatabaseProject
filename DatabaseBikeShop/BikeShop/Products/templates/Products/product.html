@@ -13,9 +13,6 @@
         <th>Phone</th>
         <th>Email</th>
         <th>Street</th>
-        <th>City</th>
-        <th>State</th>
-        <th>ZipCode</th>
     </tr>
     {% for store in stores %}
     <tr>
@@ -23,9 +20,6 @@
         <td>{{store.phone}}</td>
         <td>{{store.email}}</td>
         <td>{{store.street}}</td>
-        <td>{{store.city}}</td>
-        <td>{{store.state}}</td>
-        <td>{{store.zipCode}}</td>
         <td><a href = "{% url 'products:update-product' store.id %}" >Edit</a></td>
         <td><a href = "{% url 'products:delete-product' store.id %}" >Delete</a></td>
     </tr>

@@ -42,17 +42,10 @@ class Base(models.Model):
         abstract = True
 
 
-class Store(Base):
-    name = models.CharField(max_length=100, blank=True)
-    phone = PhoneField(blank=True, help_text='Contact phone number' )
-    email = models.EmailField(max_length=100, blank=True)
-    street = models.CharField(max_length=100, blank=True)
+class ZipCode(Base):
+    zipCode = models.CharField(max_length=5, blank=True)
     city = models.CharField(max_length=100, blank=True)
     state = USStateField(choices=STATE_CHOICES, default='PA')
-    zipCode = models.CharField(max_length=5, blank=True)
-
-    def __str__(self):
-        return self.name
 
 
 class Staff(Base):
@@ -68,15 +61,30 @@ class Staff(Base):
         verbose_name_plural = 'Staff'
 
 
-class Managers(Base):
-    store_id = models.OneToOneField(Store, on_delete=models.CASCADE, blank=True, default=1)
-    staff_id = models.OneToOneField(Staff, on_delete=models.CASCADE, blank=True, default=1)
+class Store(Base):
+    name = models.CharField(max_length=100, blank=True)
+    phone = PhoneField(blank=True, help_text='Contact phone number')
+    email = models.EmailField(max_length=100, blank=True)
+    street = models.CharField(max_length=100, blank=True)
+    #city = models.CharField(max_length=100, blank=True)
+    #state = USStateField(choices=STATE_CHOICES, default='PA')
+    #zipCode = models.CharField(max_length=5, blank=True)
+    zipCode_id = models.OneToOneField(ZipCode, on_delete=models.CASCADE, blank=True, default=1)
+    manager_id = models.OneToOneField(Staff, on_delete=models.CASCADE, blank=True, default=1)
 
     def __str__(self):
-        return '{} {}'.format(self.staff_id.first_name, self.staff_id.last_name)
+        return self.name
 
-    class Meta:
-        verbose_name_plural = 'Managers'
+
+#class Managers(Base):
+    #store_id = models.OneToOneField(Store, on_delete=models.CASCADE, blank=True, default=1)
+    #staff_id = models.OneToOneField(Staff, on_delete=models.CASCADE, blank=True, default=1)
+
+    #def __str__(self):
+     #   return '{} {}'.format(self.staff_id.first_name, self.staff_id.last_name)
+
+    #class Meta:
+    #    verbose_name_plural = 'Managers'
 
 
 class StoreEmployees(Base):
@@ -87,7 +95,7 @@ class StoreEmployees(Base):
         return '{} {} - {}'.format(self.staff_id.first_name, self.staff_id.last_name, self.store_id)
 
     class Meta:
-        verbose_name_plural = 'Store Employees'
+        verbose_name_plural = 'Products Employees'
 
 
 class Customers(Base):
@@ -96,9 +104,9 @@ class Customers(Base):
     phone = PhoneField(blank=True, help_text='Contact phone number')
     email = models.EmailField(max_length=100, blank=True)
     street = models.CharField(max_length=100, blank=True)
-    city = models.CharField(max_length=100, blank=True)
-    state = USStateField(choices=STATE_CHOICES, default='PA')
-    zipCode = models.CharField(max_length=5, blank=True)
+    #city = models.CharField(max_length=100, blank=True)
+    #state = USStateField(choices=STATE_CHOICES, default='PA')
+    zipCode_id = models.OneToOneField(ZipCode, on_delete=models.CASCADE, blank=True, default=1)
 
     def __str__(self):
         return '{} {}'.format(self.first_name, self.last_name)

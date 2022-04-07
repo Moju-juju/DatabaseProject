@@ -39,11 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Products.apps.ProductsConfig',
-    'users.apps.UsersConfig',
     'phone_field',
-    'bootstrap4',
-    'crispy_forms',
-    'ckeditor',
+
 ]
 
 MIDDLEWARE = [
@@ -135,10 +132,3 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-
-LOGIN_URL = '/users/login/'
-LOGIN_REDIRECT_URL = '/products/'
-LOGOUT_REDIRECT_URL = 'thanks'

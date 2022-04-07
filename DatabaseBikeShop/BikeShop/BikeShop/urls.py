@@ -21,5 +21,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Products.urls')), #Getting all the urls located in the Products app
     #path('users/', include('django.contrib.auth.urls')),
-    path('users/', include('users.urls', namespace='users')),
 ]
