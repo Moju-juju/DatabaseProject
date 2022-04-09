@@ -1,0 +1,27 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<p>Customers Page</p>
+
+<a href="{% url 'PmjoStore:add-customers' %}">Add Customer</a>
+
+<table>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Street</th>
+    </tr>
+    {% for customer in customers %}
+    <tr>
+        <td>{{customer.first_name}}</td>
+        <td>{{customer.last_name}}</td>
+        <td>{{customer.phone}}</td>
+        <td>{{customer.email}}</td>
+        <td>{{customer.street}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock content %}

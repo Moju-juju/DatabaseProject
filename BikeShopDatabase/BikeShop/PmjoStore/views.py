@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Store
-from .forms import StoreForm
+from .models import Store, Customers
+from .forms import StoreForm, CustomerForm
 
 
 # Create your views here (This is the logic that gets executed when the URLS are activated).
@@ -43,7 +43,7 @@ def updateProject(request, pk):
             form.save()
             return redirect('/')
     context = {'form': form}
-    return render(request, "Products/product_form.html", context)
+    return render(request, "PmjoStore/product_form.html", context)
 
 
 def deleteProject(request, pk):
@@ -52,4 +52,25 @@ def deleteProject(request, pk):
         product.delete()
         return redirect('/')
     context = {'object': product}
-    return render(request, 'Products/delete_object.html', context)
+    return render(request, 'PmjoStore/delete_object.html', context)
+
+
+def customers(request):
+    customers = Customers.objects.all()
+    context = {'customers': customers}
+    return render(request, "PmjoStore/customers.html", context)
+
+
+def createCustomer(request):
+    form = CustomerForm()
+
+    if request.method == 'POST':
+        form = CustomerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    context = {'form': form}
+    return render(request, "PmjoStore/product_form.html", context)
+
+
