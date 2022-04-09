@@ -1,0 +1,30 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<p>Current Orders</p>
+
+<table>
+    <tr>
+        <th>Customer</th>
+        <th>Item</th>
+        <th>Employee</th>
+        <th>Location</th>
+
+
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>{{order.cust_id}}</td>
+        {% for item_id in order.item_id.all %}
+        <td>{{item_id}}</td>
+        {% endfor %}
+        <td>{{order.store_staff_id.staff_id}}</td>
+        <td>{{order.store_staff_id.store_id}}</td>
+
+    </tr>
+    {% for item_id in order.item_id.all %}
+        {{item_id}}
+        {% endfor %}
+    {% endfor %}
+</table>
+{% endblock content %}

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Store, Customers
+from .models import Store, Customers, Orders
 from .forms import StoreForm, CustomerForm
 
 
@@ -95,4 +95,9 @@ def deleteCustomer(request, pk):
     context = {'object': customer}
     return render(request, 'PmjoStore/delete_object.html', context)
 
+
+def orders(request):
+    orders = Orders.objects.all()
+    context = {'orders': orders}
+    return render(request, "PmjoStore/orders.html", context)
 

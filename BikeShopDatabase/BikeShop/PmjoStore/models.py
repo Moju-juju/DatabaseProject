@@ -92,13 +92,13 @@ class Store(Base):
 
 class StoreEmployees(Base):
     staff_id = models.OneToOneField(Staff, on_delete=models.CASCADE, blank=True, default=1)
-    #store_id = models.ForeignKey(Store, on_delete=models.CASCADE, blank=True, default=1)
+    store_id = models.ForeignKey(Store, on_delete=models.CASCADE, blank=True, default=1)
 
     def __str__(self):
         return '{} {} - {}'.format(self.staff_id.first_name, self.staff_id.last_name, self.store_id)
 
     class Meta:
-        verbose_name_plural = 'Products Employees'
+        verbose_name_plural = 'Store Employees'
 
 
 class Customers(Base):
