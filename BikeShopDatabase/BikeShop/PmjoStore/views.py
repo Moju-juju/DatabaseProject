@@ -74,3 +74,25 @@ def createCustomer(request):
     return render(request, "PmjoStore/product_form.html", context)
 
 
+def updateCustomer(request, pk):
+    customer = Customers.objects.get(id=pk)
+    form = CustomerForm(instance=customer)
+
+    if request.method == 'POST':
+        form = CustomerForm(request.POST, request.FILES, instance=customer)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    context = {'form': form}
+    return render(request, "PmjoStore/product_form.html", context)
+
+
+def deleteCustomer(request, pk):
+    customer = Customers.objects.get(id=pk)
+    if request.method == 'POST':
+        customer.delete()
+        return redirect('/')
+    context = {'object': customer}
+    return render(request, 'PmjoStore/delete_object.html', context)
+
+

@@ -20,6 +20,8 @@
         <td>{{customer.phone}}</td>
         <td>{{customer.email}}</td>
         <td>{{customer.street}}</td>
+        <td><a href = "{% url 'PmjoStore:update-customer' customer.id %}" >Edit</a></td>
+        <td><a href = "{% url 'PmjoStore:delete-customer' customer.id %}" >Delete</a></td>
     </tr>
     {% endfor %}
 </table>
