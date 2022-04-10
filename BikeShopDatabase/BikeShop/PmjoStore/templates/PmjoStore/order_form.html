@@ -1,0 +1,35 @@
+{% extends 'main.html' %}
+{% block content%}
+
+<h1>Add Object</h1>
+
+
+
+<form action="" method="POST">
+    {% csrf_token %}
+
+    {% for order in orders %}
+    <p>
+        <label for="id_order.cust_id">Customer:</label>
+        <input type="text" name="name" value = "{{order.cust_id}}" maxlength="100" required id = "id_order.cust_id">
+    </p>
+    {% for item in items %}
+    <p>
+        <label for="id_item">Item:</label>
+        <select name="name" required id ="id_item">
+            <option value="{{item.bike_prod_id}}"> {{item.bike_prod_id}}</option>
+        </select>
+    </p>
+    {% endfor %}
+    <p>
+        <label for="id_employee">Employee:</label>
+        <input type="text" name="name" value = "{{order.store_staff_id.staff_id}}" maxlength="100" required id = "id_employee">
+    </p>
+    <p>
+        <label for="id_store">Employee:</label>
+        <input type="text" name="name" value = "{{order.store_staff_id.store_id}}" maxlength="100" required id = "id_store">
+    </p>
+    {% endfor %}
+    <input type="submit" name="orders">
+</form>
+{% endblock %}

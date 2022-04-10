@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+{% block content%}
+
+<h1>Add Object</h1>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" name="createOrder">
+    {{form2.as_p}}
+    <input type="submit" name="addItems">
+    <input type="submit" name="submitForm" value="Form">
+</form>
+{% endblock %}

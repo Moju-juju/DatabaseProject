@@ -109,7 +109,7 @@ class Customers(Base):
     street = models.CharField(max_length=100, blank=True)
     #city = models.CharField(max_length=100, blank=True)
     #state = USStateField(choices=STATE_CHOICES, default='PA')
-    zipCode_id = models.OneToOneField(ZipCode, on_delete=models.CASCADE, blank=True, default=1)
+    zipCode_id = models.ForeignKey(ZipCode, on_delete=models.CASCADE, blank=True, default=1)
 
     def __str__(self):
         return '{} {}'.format(self.first_name, self.last_name)
@@ -153,7 +153,22 @@ class BikeProducts(Base):
         verbose_name_plural = 'Bike Products'
 
 
+class Orders(Base):
+    cust_id = models.ForeignKey(Customers, on_delete=models.CASCADE, blank=True, default=1)
+    #item_id = models.ManyToManyField(CartItems, blank=True, symmetrical=False)
+    store_staff_id = models.ForeignKey(StoreEmployees, on_delete=models.CASCADE, blank=True, default=1)
+    order_date = models.DateTimeField(auto_now_add=True)
+    discount = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return '{} - {} - {}'.format(self.cust_id, self.order_date, self.discount)
+
+    class Meta:
+        verbose_name_plural = 'Orders'
+
+
 class CartItems(Base):
+    order_id = models.ForeignKey(Orders, on_delete=models.CASCADE, blank=True, default=1)
     bike_prod_id = models.ForeignKey(BikeProducts, on_delete=models.CASCADE, blank=True, default=1)
     quantity_sold = models.PositiveIntegerField(default=1)
 
@@ -162,17 +177,6 @@ class CartItems(Base):
 
     class Meta:
         verbose_name_plural = 'Cart Items'
-
-
-class Orders(Base):
-    cust_id = models.ForeignKey(Customers, on_delete=models.CASCADE, blank=True, default=1)
-    item_id = models.ManyToManyField(CartItems, blank=True, symmetrical=False)
-    store_staff_id = models.ForeignKey(StoreEmployees, on_delete=models.CASCADE, blank=True, default=1)
-    order_date = models.DateTimeField(auto_now_add=True)
-    discount = models.PositiveIntegerField(default=0)
-
-    class Meta:
-        verbose_name_plural = 'Orders'
 
 
 class StockList(Base):
