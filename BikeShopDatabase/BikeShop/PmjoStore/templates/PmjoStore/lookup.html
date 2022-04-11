@@ -1,0 +1,34 @@
+{% extends 'main.html' %}
+{% block content %}
+<p>Look Up Page</p>
+
+<form action="{% url 'PmjoStore:lookup-page' %}" method="get">
+    <label for="fromInput#search">Search</label>
+    <input type="text" name="search_query" id="fromInput#search" value="{{search_query}}">
+    <input type="submit" value="Search">
+</form>
+
+<table>
+    <tr>
+        <th>Store</th>
+        <th>Phone</th>
+        <th>Street</th>
+        <th>City</th>
+        <th>Zip</th>
+        <th>Product</th>
+        <th>Inventory</th>
+    </tr>
+    <tr>
+        {% for stockItem in stockItems %}
+        <td>{{stockItem.store_id}}</td>
+        <td>{{stockItem.store_id.phone}}</td>
+        <td>{{stockItem.store_id.street}}</td>
+        <td>{{stockItem.store_id.zipCode_id.city}}</td>
+        <td>{{stockItem.store_id.zipCode_id.zipCode}}</td>
+        <td>{{stockItem.bike_prod_id}}</td>
+        <td>{{stockItem.quantity}}</td>
+    </tr>
+        {% endfor %}
+</table>
+
+{% endblock content %}

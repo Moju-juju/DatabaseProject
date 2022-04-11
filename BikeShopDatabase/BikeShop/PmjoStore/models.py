@@ -48,7 +48,7 @@ class ZipCode(Base):
     state = USStateField(choices=STATE_CHOICES, default='PA')
 
     def __str__(self):
-        return self.zipCode
+        return '{} {}'.format(self.zipCode, self.city)
 
 
 class Staff(Base):
@@ -180,8 +180,11 @@ class CartItems(Base):
 
 
 class StockList(Base):
-    #store_id = models.OneToOneField(Store, on_delete=models.CASCADE, blank=True, default=1)
-    bike_prod_id = models.ManyToManyField(BikeProducts, symmetrical=False)
+    store_id = models.ForeignKey(Store, on_delete=models.CASCADE, blank=True, default=1)
+    bike_prod_id = models.ForeignKey(BikeProducts, on_delete=models.CASCADE, blank=True, default=1)
     quantity = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return '{} - {} - {}'.format(self.store_id, self.bike_prod_id, self.quantity)
 
 #models.setnull - keep children from dieing

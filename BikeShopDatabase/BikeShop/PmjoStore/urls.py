@@ -19,4 +19,5 @@ urlpatterns = [
     path('add-order/', views.createOrder, name="add-order"),
     path('update-order/<str:pk>/', views.updateOrder, name="update-order"),
     path('delete-order/<str:pk>/', views.deleteOrder, name="delete-order"),
+    path('lookup/', views.searchPage, name="lookup-page"),
 ]

@@ -1,8 +1,10 @@
 import requests
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Store, Customers, Orders, CartItems
+from .models import Store, Customers, Orders, CartItems, StockList, StoreEmployees, BikeProducts
 from .forms import StoreForm, CustomerForm, OrderForm, CartItemsForm
+from django.db.models import F
+from django.db.models import Q
 
 
 # Create your views here (This is the logic that gets executed when the URLS are activated).
@@ -122,6 +124,73 @@ def createOrder(request):
     context = {'form': form, 'form2': form2}
     return render(request, "PmjoStore/placeOrder_form.html", context)
 
+def createOrder(request):
+    form = OrderForm()
+    form2 = CartItemsForm()
+    context = {'form': form, 'form2': form2}
+    if request.method == 'POST':
+        if 'createOrder' in request.POST:
+            form = OrderForm(request.POST)
+            if form.is_valid():
+                form.save()
+                store = request.POST['store_staff_id']
+                #currentOrder = Orders.objects.get(id=)
+                storestaff = StoreEmployees.objects.get(id=store)
+                print(storestaff.store_id)
+                #storeStock = StockList.objects.filter(store_id_id=storestaff.store_id, bike_prod_id_id= )
+                #print(storeStock)
+                print('store '+ store)
+                #employee = storestaff['staff_id']
+                print('store staff ' + str(storestaff))
+                #print('store staff ' + str(employee))
+                bikeChoices = StockList.objects.filter(store_id_id=storestaff.store_id)
+                print(bikeChoices)
+                context.update({'bikeChoices': bikeChoices})
+        if 'addItems' in request.POST:
+            form2 = CartItemsForm(request.POST)
+            if form2.is_valid():
+                form2.save()
+                print(form2)
+                #Get order ID
+                order = request.POST['order_id']
+                print('order' + order)
+                #Match Order ID with Order
+                #Get Order Number
+                currentOrder = Orders.objects.get(id=order)
+                print(currentOrder)
+                #Match Order with Store Staff ID table
+                stsf = currentOrder.store_staff_id.id
+                print(stsf)
+                #Match Store Staff ID with Store table to get the store
+                store = StoreEmployees.objects.get(id=stsf)
+                store = store.store_id
+
+                print("store" + str(store))
+                #Get the bike prod id from the order
+                bike = request.POST['bike_prod_id']
+                #Match Stocklist ID with Store ID
+                stock = StockList.objects.get(store_id_id=store, bike_prod_id_id=bike)
+                print("Stock" + str(stock))
+                #Remove quantity from stocklist
+                quantitySold = request.POST['quantity_sold']
+                stock.quantity = F('quantity') - quantitySold
+                stock.save()
+
+                answer = request.POST['bike_prod_id']
+                print('answer', answer)
+
+                if stock.quantity == 0:
+                    stock.delete()
+            else:
+                print('not good')
+
+                #stock.quantity = stock.quantity - quantity
+
+        if 'submitForm' in request.POST:
+            return redirect('/')
+
+    return render(request, "PmjoStore/placeOrder_form.html", context)
+
 
 def updateOrder(request, pk):
     orders = Orders.objects.filter(id=pk)
@@ -146,6 +215,33 @@ def deleteOrder(request, pk):
         return redirect('/')
     context = {'object': order}
     return render(request, 'PmjoStore/delete_object.html', context)
+
+
+def searchPage(request):
+    search_query = ''
+
+    if request.GET.get('search_query'):
+        search_query = request.GET.get('search_query')
+    print('SEARCH:', search_query)
+
+    products = BikeProducts.objects.filter(name__icontains=search_query)
+    print(products)
+    bikeID = BikeProducts.objects.filter(name=products)
+    #print(bikeID)
+
+    stockItem = StockList.objects.filter(bike_prod_id_id__in=products).order_by('-bike_prod_id')#.values('store_id')
+    print([p for p in stockItem])
+    #print(stores.values('store_id').get()['store_id'])
+    #storesX = StockList.objects.filter(bike_prod_id__=search_query).values('store_id')
+    #print([p for p in storesX])
+
+    #storesInfo = Store.objects.filter(id=stores)
+
+    #print([p for p in storesInfo])
+    #print(storesInfo)
+
+    context = {'stockItems': stockItem, 'search_query': search_query}
+    return render(request, 'PmjoStore/lookup.html', context)
 
 
 
