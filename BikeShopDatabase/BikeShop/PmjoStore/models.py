@@ -2,6 +2,7 @@ import datetime
 import uuid
 
 from django.db import models
+from django.urls import reverse
 from phone_field import PhoneField
 from localflavor.us.us_states import STATE_CHOICES
 from localflavor.us.models import USStateField
@@ -159,6 +160,9 @@ class Orders(Base):
     store_staff_id = models.ForeignKey(StoreEmployees, on_delete=models.CASCADE, blank=True, default=1)
     order_date = models.DateTimeField(auto_now_add=True)
     discount = models.PositiveIntegerField(default=0)
+
+    def get_absolute_url(self):
+        return reverse('PmjoStore:update-order', kwargs={'pk': self.pk})
 
     def __str__(self):
         return '{} - {} - {}'.format(self.cust_id, self.order_date, self.discount)

@@ -1,7 +1,22 @@
-<h1>LOGO</h1>
-<a href="{% url 'PmjoStore:products' %}">Home</a>
-<a href="{% url 'PmjoStore:create-store' %}">Add Store</a>
-<a href="{% url 'PmjoStore:customers-page' %}">Customers</a>
-<a href="{% url 'PmjoStore:orders-page' %}">Orders</a>
-<a href="{% url 'PmjoStore:lookup-page' %}">Product Lookup</a>
-<hr>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">
+        Julian Project
+    </a>
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'PmjoStore:products' %}">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'PmjoStore:create-store' %}">Add Store</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'PmjoStore:customers-page' %}">Customers</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'PmjoStore:orders-page' %}">Orders</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'PmjoStore:lookup-page' %}">Product Lookup</a>
+        </li>
+    </ul>
+</nav>

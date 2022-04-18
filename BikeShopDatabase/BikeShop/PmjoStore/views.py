@@ -1,6 +1,8 @@
 import requests
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
+from django.views.generic import CreateView, DetailView
+
 from .models import Store, Customers, Orders, CartItems, StockList, StoreEmployees, BikeProducts
 from .forms import StoreForm, CustomerForm, OrderForm, CartItemsForm
 from django.db.models import F
@@ -106,90 +108,135 @@ def orders(request):
     return render(request, "PmjoStore/orders.html", context)
 
 
-def createOrder(request):
-    form = OrderForm()
-    form2 = CartItemsForm()
+def CreateOrder(request):
     if request.method == 'POST':
-        if 'createOrder' in request.POST:
-            form = OrderForm(request.POST)
-            if form.is_valid():
-                form.save()
-        if 'addItems' in request.POST:
-            form = CartItemsForm(request.POST)
-            if form.is_valid():
-                form.save()
-        if 'submitForm' in request.POST:
-            return redirect('/')
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            order = form.save()
+            return redirect('PmjoStore:update-order', pk=order.pk)
+    else:
+        form = OrderForm()
+    context = {'form': form}
+    return render(request, 'PmjoStore/new_order_form.html', context)
 
-    context = {'form': form, 'form2': form2}
-    return render(request, "PmjoStore/placeOrder_form.html", context)
 
-def createOrder(request):
-    form = OrderForm()
-    form2 = CartItemsForm()
-    context = {'form': form, 'form2': form2}
+def add_item_to_order(request, pk):
+    order = Orders.objects.get(id=pk)
+
     if request.method == 'POST':
-        if 'createOrder' in request.POST:
-            form = OrderForm(request.POST)
-            if form.is_valid():
-                form.save()
-                store = request.POST['store_staff_id']
-                #currentOrder = Orders.objects.get(id=)
-                storestaff = StoreEmployees.objects.get(id=store)
-                print(storestaff.store_id)
-                #storeStock = StockList.objects.filter(store_id_id=storestaff.store_id, bike_prod_id_id= )
-                #print(storeStock)
-                print('store '+ store)
-                #employee = storestaff['staff_id']
-                print('store staff ' + str(storestaff))
-                #print('store staff ' + str(employee))
-                bikeChoices = StockList.objects.filter(store_id_id=storestaff.store_id)
-                print(bikeChoices)
-                context.update({'bikeChoices': bikeChoices})
-        if 'addItems' in request.POST:
-            form2 = CartItemsForm(request.POST)
-            if form2.is_valid():
-                form2.save()
-                print(form2)
-                #Get order ID
-                order = request.POST['order_id']
-                print('order' + order)
-                #Match Order ID with Order
-                #Get Order Number
-                currentOrder = Orders.objects.get(id=order)
-                print(currentOrder)
-                #Match Order with Store Staff ID table
-                stsf = currentOrder.store_staff_id.id
-                print(stsf)
-                #Match Store Staff ID with Store table to get the store
-                store = StoreEmployees.objects.get(id=stsf)
-                store = store.store_id
+        form = CartItemsForm(request.POST or None)
+        if form.is_valid():
+            form.instance.order_id = order
+            item = form.save(commit=False)
+            item.save()
+            return redirect('PmjoStore:update-order', pk=order.pk)
+    else:
+        form = CartItemsForm()
+        stock_lists = StockList.objects.filter(store_id=order.store_staff_id.store_id)
+        bike_prod_ids = []
 
-                print("store" + str(store))
-                #Get the bike prod id from the order
-                bike = request.POST['bike_prod_id']
-                #Match Stocklist ID with Store ID
-                stock = StockList.objects.get(store_id_id=store, bike_prod_id_id=bike)
-                print("Stock" + str(stock))
-                #Remove quantity from stocklist
-                quantitySold = request.POST['quantity_sold']
-                stock.quantity = F('quantity') - quantitySold
-                stock.save()
+        for stock_list in stock_lists:
+            bike_prod_ids.append(stock_list.bike_prod_id.id)
 
-                answer = request.POST['bike_prod_id']
-                print('answer', answer)
+        bike_products = BikeProducts.objects.filter(id__in=bike_prod_ids)
+        form.fields['bike_prod_id'].queryset = bike_products
 
-                if stock.quantity == 0:
-                    stock.delete()
-            else:
-                print('not good')
+    return render(request, 'PmjoStore/add_item.html', {'form': form})
 
-                #stock.quantity = stock.quantity - quantity
+# def createOrder(request):
+#     form = OrderForm()
+#     form2 = CartItemsForm()
+#     if request.method == 'POST':
+#         if 'createOrder' in request.POST:
+#             form = OrderForm(request.POST)
+#             if form.is_valid():
+#                 form.save()
+#         if 'addItems' in request.POST:
+#             form = CartItemsForm(request.POST)
+#             if form.is_valid():
+#                 form.save()
+#         if 'submitForm' in request.POST:
+#             return redirect('/')
+#
+#     context = {'form': form, 'form2': form2}
+#     return render(request, "PmjoStore/new_order_form.html", context)
 
-        if 'submitForm' in request.POST:
-            return redirect('/')
 
-    return render(request, "PmjoStore/placeOrder_form.html", context)
+#def createOrder(request):
+    # form = OrderForm()
+    # context = {'form': form}
+    # if request.method == 'POST':
+    #     form = OrderForm(request.POST or None)
+    #     if form.is_valid():
+    #         order = form.save()
+    #         return redirect('order-details', pk=order.id)
+
+
+            # orderNumber = request.POST['id']
+            # print(orderNumber)
+            # form.save()
+                # store = request.POST['store_staff_id']
+                # #currentOrder = Orders.objects.get(id=)
+                # storestaff = StoreEmployees.objects.get(id=store)
+                # print(storestaff.store_id)
+                # #storeStock = StockList.objects.filter(store_id_id=storestaff.store_id, bike_prod_id_id= )
+                # #print(storeStock)
+                # print('store '+ store)
+                # #employee = storestaff['staff_id']
+                # print('store staff ' + str(storestaff))
+                # #print('store staff ' + str(employee))
+                # bikeChoices = StockList.objects.filter(store_id=storestaff.store_id)
+                # print(bikeChoices)
+                # context.update({'bikeChoices': bikeChoices})
+
+
+    # return render(request, "PmjoStore/orderDetail.html/{{}}", context)
+
+def addItems(request, pk):
+    context = {'form': form, 'form2': form2}
+    if 'addItems' in request.POST:
+        form2 = CartItemsForm(request.POST)
+        if form2.is_valid():
+            form2.save()
+            print(form2)
+            # Get order ID
+            order = request.POST['order_id']
+            print('order' + order)
+            # Match Order ID with Order
+            # Get Order Number
+            currentOrder = Orders.objects.get(id=order)
+            print(currentOrder)
+            # Match Order with Store Staff ID table
+            stsf = currentOrder.store_staff_id.id
+            print(stsf)
+            # Match Store Staff ID with Store table to get the store
+            store = StoreEmployees.objects.get(id=stsf)
+            store = store.store_id
+
+            print("store" + str(store))
+            # Get the bike prod id from the order
+            bike = request.POST['bike_prod_id']
+            # Match Stocklist ID with Store ID
+            stock = StockList.objects.get(store_id_id=store, bike_prod_id_id=bike)
+            print("Stock" + str(stock))
+            # Remove quantity from stocklist
+            quantitySold = request.POST['quantity_sold']
+            stock.quantity = F('quantity') - quantitySold
+            stock.save()
+
+            answer = request.POST['bike_prod_id']
+            print('answer', answer)
+
+            if stock.quantity == 0:
+                stock.delete()
+        else:
+            print('not good')
+
+            # stock.quantity = stock.quantity - quantity
+
+    if 'submitForm' in request.POST:
+        return redirect('/')
+    return render(request, "PmjoStore/new_order_form.html", context)
 
 
 def updateOrder(request, pk):

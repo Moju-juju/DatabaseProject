@@ -16,8 +16,10 @@ urlpatterns = [
     path('update-customer/<str:pk>/', views.updateCustomer, name="update-customer"),
     path('delete-customer/<str:pk>/', views.deleteCustomer, name="delete-customer"),
     path('orders/', views.orders, name="orders-page"),
-    path('add-order/', views.createOrder, name="add-order"),
+    path('add-order/', views.CreateOrder, name="add-order"),
     path('update-order/<str:pk>/', views.updateOrder, name="update-order"),
+    path('update-order/<str:pk>/add-item/', views.add_item_to_order, name="add_item_to_order"),
     path('delete-order/<str:pk>/', views.deleteOrder, name="delete-order"),
     path('lookup/', views.searchPage, name="lookup-page"),
+    #path('orderDetails/<str:pk>/', views.OrderDetails.as_view(), name="order_details"),
 ]

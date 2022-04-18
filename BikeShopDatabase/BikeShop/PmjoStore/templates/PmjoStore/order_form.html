@@ -1,7 +1,7 @@
 {% extends 'main.html' %}
 {% block content%}
 
-<h1>Add Object</h1>
+<h1>Order Details</h1>
 
 
 
@@ -9,9 +9,18 @@
     {% csrf_token %}
 
     {% for order in orders %}
+    <a class="btn btn-primary mb-1" href="{% url 'PmjoStore:add_item_to_order' pk=order.pk %}">Add Item</a>
     <p>
         <label for="id_order.cust_id">Customer:</label>
         <input type="text" name="name" value = "{{order.cust_id}}" maxlength="100" required id = "id_order.cust_id">
+    </p>
+    <p>
+        <label for="id_employee">Employee:</label>
+        <input type="text" name="name" value = "{{order.store_staff_id.staff_id}}" maxlength="100" required id = "id_employee">
+    </p>
+    <p>
+        <label for="id_store">Employee:</label>
+        <input type="text" name="name" value = "{{order.store_staff_id.store_id}}" maxlength="100" required id = "id_store">
     </p>
     {% for item in items %}
     <p>
@@ -21,15 +30,7 @@
         </select>
     </p>
     {% endfor %}
-    <p>
-        <label for="id_employee">Employee:</label>
-        <input type="text" name="name" value = "{{order.store_staff_id.staff_id}}" maxlength="100" required id = "id_employee">
-    </p>
-    <p>
-        <label for="id_store">Employee:</label>
-        <input type="text" name="name" value = "{{order.store_staff_id.store_id}}" maxlength="100" required id = "id_store">
-    </p>
     {% endfor %}
-    <input type="submit" name="orders">
+
 </form>
 {% endblock %}

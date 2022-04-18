@@ -7,21 +7,21 @@
 <hr>
 <h1>Products</h1>
 
-<table>
+<table class="product-table">
     <tr>
-        <th>Name</th>
-        <th>Phone</th>
-        <th>Email</th>
-        <th>Street</th>
+        <th class="pr-5">Name</th>
+        <th class="pr-5 pl-5">Phone</th>
+        <th class="pr-5 pl-5">Email</th>
+        <th class="pr-5 pl-5">Street</th>
     </tr>
     {% for store in stores %}
     <tr>
-        <td>{{store.name}}</td>
-        <td>{{store.phone}}</td>
-        <td>{{store.email}}</td>
-        <td>{{store.street}}</td>
-        <td><a href = "{% url 'PmjoStore:update-product' store.id %}" >Edit</a></td>
-        <td><a href = "{% url 'PmjoStore:delete-product' store.id %}" >Delete</a></td>
+        <td class="pr-5">{{store.name}}</td>
+        <td class="pr-5 pl-5">{{store.phone}}</td>
+        <td class="pr-5 pl-5">{{store.email}}</td>
+        <td class="pr-5 pl-5">{{store.street}}</td>
+        <td><a class="button btn btn-primary" href="{% url 'PmjoStore:update-product' store.id %}">Edit</a></td>
+        <td><a class="button btn btn-danger" href="{% url 'PmjoStore:delete-product' store.id %}">Delete</a></td>
     </tr>
     {% endfor %}
 </table>

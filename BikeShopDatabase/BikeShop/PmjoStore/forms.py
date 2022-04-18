@@ -1,4 +1,5 @@
-from django.forms import ModelForm
+from django import forms
+from django.forms import ModelForm, Form, ChoiceField
 from .models import Store, Customers, Orders, CartItems
 
 
@@ -20,7 +21,15 @@ class OrderForm(ModelForm):
         fields = '__all__'
 
 
+# class OrderForm(Form):
+#     bikes = forms.Choicefield(choices=getMyChoices())
+#
+#     def getMyChoices(self):
+#         choices_list = []
+#         return choices_list
+
+
 class CartItemsForm(ModelForm):
     class Meta:
         model = CartItems
-        fields = '__all__'
+        fields = ('bike_prod_id', 'quantity_sold',)
