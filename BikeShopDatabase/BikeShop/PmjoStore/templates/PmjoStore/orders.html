@@ -7,7 +7,7 @@
 
 <table>
     <tr>
-        <th>Customer</th>
+        <th>Customers</th>
         <th>Item</th>
         <th>Employee</th>
         <th>Location</th>
@@ -17,10 +17,10 @@
     {% for order in orders %}
     <tr>
         <td>{{order.cust_id}}</td>
-         <td>{% for item in items %}
+        <td>{% for item in items %}
         {% if item.order_id.id == order.id %}
-        {{item.bike_prod_id}}
-        {% endif %}
+            {{item.bike_prod_id}}
+            {% endif %}
         {% endfor %}</td>
         <td>{{order.store_staff_id.staff_id}}</td>
         <td>{{order.store_staff_id.store_id}}</td>

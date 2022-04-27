@@ -1,0 +1,42 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<h1>{{customer.first_name}} {{customer.last_name}}</h1>
+
+<div class="container">
+<div class="row">
+    <div>
+<table>
+    <tr>
+        <th class="pr-3">First Name</th>
+        <th class="pr-3 pl-3">Last Name</th>
+        <th class="pr-3 pl-3">Store</th>
+    </tr>
+
+        {% for employee in employees %}
+    <tr>
+        <td class="pr-3">{{employee.staff_id.first_name}}</td>
+        <td class="pr-3 pl-3">{{employee.staff_id.last_name}}</td>
+        <td class="pr-3 pl-3">{{employee.store_id.name}}</td>
+    </tr>
+     {% endfor %}
+    </table>
+    </div>
+
+
+    <div>
+    <table>
+       <tr>
+            <th class="pr-3 pl-3">Total Sales</th>
+       </tr>
+        {% for sale in sales %}
+        <tr>
+            <td class="pr-3 pl-3">{{sale}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+        </div>
+</div>
+    </div   >
+
+{% endblock content %}
