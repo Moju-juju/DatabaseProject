@@ -10,19 +10,19 @@ from django.db.models import Q
 
 
 # Create your views here (This is the logic that gets executed when the URLS are activated).
-def products(request):
+def stores(request):
     msg = 'hello you are on the home page'
     stores = Store.objects.all()
     context = {'stores': stores}
-    return render(request, 'PmjoStore/product.html', context)
+    return render(request, 'PmjoStore/store.html', context)
 
 
-def product(request, pk):
+def store(request, pk):
     productObj = None
     #for i in productsList:
      #   if i['id'] == pk:
       #      productObj = i
-    return render(request, 'PmjoStore/single-product.html')
+    return render(request, 'PmjoStore/single-store.html')
 
 
 def createstore(request):
@@ -35,29 +35,29 @@ def createstore(request):
             return redirect('/')
 
     context = {'form': form}
-    return render(request, "PmjoStore/product_form.html", context)
+    return render(request, "PmjoStore/store_form.html", context)
 
 
-def updateProject(request, pk):
-    product = Store.objects.get(id=pk)
-    form = StoreForm(instance=product)
+def updateStore(request, pk):
+    store = Store.objects.get(id=pk)
+    form = StoreForm(instance=store)
 
     if request.method == 'POST':
-        form = StoreForm(request.POST, request.FILES, instance=product)
+        form = StoreForm(request.POST, request.FILES, instance=store)
         if form.is_valid():
             form.save()
             return redirect('/')
     context = {'form': form}
-    return render(request, "PmjoStore/product_form.html", context)
+    return render(request, "PmjoStore/store_form.html", context)
 
 
-def deleteProject(request, pk):
-    product = Store.objects.get(id=pk)
+def deleteStore(request, pk):
+    store = Store.objects.get(id=pk)
     if request.method == 'POST':
-        product.delete()
+        store.delete()
         return redirect('/')
-    context = {'object': product}
-    return render(request, 'PmjoStore/delete_object.html', context)
+    context = {'object': store}
+    return render(request, 'PmjoStore/delete_store.html', context)
 
 
 def customers(request):

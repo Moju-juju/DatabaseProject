@@ -6,11 +6,11 @@ from . import views #import the views to access the functions for these urls
 app_name = 'PmjoStore'
 
 urlpatterns = [
-    path('', views.products, name="products"),
-    path('product/<str:pk>/', views.product, name="product"),
+    path('', views.stores, name="stores"),
+    path('store/<str:pk>/', views.store, name="store"),
     path('create-store/', views.createstore, name="create-store"),
-    path('update-product/<str:pk>/', views.updateProject, name='update-product'),
-    path('delete-product/<str:pk>/', views.deleteProject, name='delete-product'),
+    path('update-store/<str:pk>/', views.updateStore, name='update-store'),
+    path('delete-store/<str:pk>/', views.deleteStore, name='delete-store'),
     path('customers/', views.customers, name="customers-page"),
     path('add-customers/', views.createCustomer, name="add-customers"),
     path('update-customer/<str:pk>/', views.updateCustomer, name="update-customer"),

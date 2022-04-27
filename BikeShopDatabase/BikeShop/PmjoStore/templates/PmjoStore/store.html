@@ -16,8 +16,8 @@
         <td class="pr-5 pl-5">{{store.phone}}</td>
         <td class="pr-5 pl-5">{{store.email}}</td>
         <td class="pr-5 pl-5">{{store.street}}</td>
-        <td><a class="button btn btn-primary" href="{% url 'PmjoStore:update-product' store.id %}">Edit</a></td>
-        <td><a class="button btn btn-danger" href="{% url 'PmjoStore:delete-product' store.id %}">Delete</a></td>
+        <td><a class="button btn btn-primary" href="{% url 'PmjoStore:update-store' store.id %}">Edit</a></td>
+        <td><a class="button btn btn-danger" href="{% url 'PmjoStore:delete-store' store.id %}">Delete</a></td>
     </tr>
     {% endfor %}
 </table>
