@@ -5,25 +5,25 @@ from django.http import HttpResponse
 from django.views.generic import CreateView, DetailView
 
 from .models import Store, Customers, Orders, CartItems, StockList, StoreEmployees, BikeProducts
-from .forms import StoreForm, CustomerForm, OrderForm, CartItemsForm
+from .forms import BrandForm, ProductsForm, StocksForm, StoreForm, CustomerForm, OrderForm, CartItemsForm
 from django.db.models import F
 from django.db.models import Q
 
 
 # Create your views here (This is the logic that gets executed when the URLS are activated).
-def products(request):
+def stores(request):
     msg = 'hello you are on the home page'
     stores = Store.objects.all()
     context = {'stores': stores}
-    return render(request, 'PmjoStore/product.html', context)
+    return render(request, 'PmjoStore/store.html', context)
 
 
-def product(request, pk):
+def store(request, pk):
     productObj = None
     #for i in productsList:
      #   if i['id'] == pk:
       #      productObj = i
-    return render(request, 'PmjoStore/single-product.html')
+    return render(request, 'PmjoStore/single-store.html')
 
 
 def createstore(request):
@@ -36,12 +36,12 @@ def createstore(request):
             return redirect('/')
 
     context = {'form': form}
-    return render(request, "PmjoStore/product_form.html", context)
+    return render(request, "PmjoStore/store_form.html", context)
 
 
-def updateProject(request, pk):
-    product = Store.objects.get(id=pk)
-    form = StoreForm(instance=product)
+def updateStore(request, pk):
+    store = Store.objects.get(id=pk)
+    form = StoreForm(instance=store)
 
     if request.method == 'POST':
         form = StoreForm(request.POST, request.FILES, instance=product)
@@ -49,16 +49,16 @@ def updateProject(request, pk):
             form.save()
             return redirect('/')
     context = {'form': form}
-    return render(request, "PmjoStore/product_form.html", context)
+    return render(request, "PmjoStore/store_form.html", context)
 
 
-def deleteProject(request, pk):
-    product = Store.objects.get(id=pk)
+def deleteStore(request, pk):
+    store = Store.objects.get(id=pk)
     if request.method == 'POST':
-        product.delete()
+        store.delete()
         return redirect('/')
-    context = {'object': product}
-    return render(request, 'PmjoStore/delete_object.html', context)
+    context = {'object': store}
+    return render(request, 'PmjoStore/delete_store.html', context)
 
 
 def customers(request):
@@ -77,7 +77,7 @@ def createCustomer(request):
             return redirect('/')
 
     context = {'form': form}
-    return render(request, "PmjoStore/product_form.html", context)
+    return render(request, "PmjoStore/customer_form.html", context)
 
 
 def updateCustomer(request, pk):
@@ -90,7 +90,7 @@ def updateCustomer(request, pk):
             form.save()
             return redirect('/')
     context = {'form': form}
-    return render(request, "PmjoStore/product_form.html", context)
+    return render(request, "PmjoStore/customers_form.html", context)
 
 
 def deleteCustomer(request, pk):
@@ -100,6 +100,86 @@ def deleteCustomer(request, pk):
         return redirect('/')
     context = {'object': customer}
     return render(request, 'PmjoStore/delete_object.html', context)
+
+
+def purchases(request, pk):
+    customer = Customers.objects.get(id=pk)
+    orders =  Orders.objects.filter(cust_id=customer)
+    print(orders)
+    items = CartItems.objects.all()
+    context = {'customer': customer, 'orders:': orders, 'items': items}
+    return render(request, 'PmjoStore/cust_purch.html', context)
+
+
+def addBrand(request):
+    form = BrandForm()
+
+    if request.method == 'POST':
+        form = BrandForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    context = {'form': form}
+    return render(request, "PmjoStore/brand_form.html", context)
+
+
+def stockCtrl(request):
+    search_query = ''
+
+    if request.GET.get('search_query'):
+        search_query = request.GET.get('search_query')
+    print('SEARCH:', search_query)
+
+    stores = Store.objects.filter(name__icontains=search_query)
+    print(stores)
+    storeID = Store.objects.filter(name=stores)
+    #print(bikeID)
+
+    stocks = StockList.objects.filter(store_id_id__in=stores).order_by('store_id')
+    print([p for p in stocks])
+
+    context = {'stocks': stocks, 'search_query': search_query}
+    return render(request, 'PmjoStore/stock_ctrl_panel.html', context)
+
+
+def addStock(request):
+    form = StocksForm()
+
+    if request.method == 'POST':
+        form = StocksForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    context = {'form': form}
+    return render(request, "PmjoStore/stock_form.html", context)
+
+
+def updateStock(request, pk):
+    stock = StockList.objects.get(id=pk)
+    form = StocksForm(instance=stock)
+
+    if request.method == 'POST':
+        form = StocksForm(request.POST, request.FILES, instance=stock)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    context = {'form': form}
+    return render(request, "PmjoStore/stock_form.html", context)
+
+
+def addProduct(request):
+    form = ProductsForm()
+
+    if request.method == 'POST':
+        form = ProductsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    context = {'form': form}
+    return render(request, "PmjoStore/product_form.html", context)
 
 
 def orders(request):
@@ -296,32 +376,21 @@ def searchPage(request):
     return render(request, 'PmjoStore/lookup.html', context)
 
 
+def pieChart(request):
+    labels = []
+    data = []
 
+    queryset = Store.objects.all()
+    orders = Orders.objects.all()
+    for store in queryset:
+        labels.append(store.name)
+        sales = Orders.objects.filter(store_staff_id_store_id_id = queryset).count()
+        data.append(sales)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return render(request, 'PmjoStore/pie_chart.html', {
+        'labels': labels,
+        'data':data,
+    })
 
 
 
@@ -356,4 +425,3 @@ def updateItemFake(request, pk):
             return redirect('/')
     context = {'form': form}
     return render(request, "PmjoStore/product_form.html", context)
-

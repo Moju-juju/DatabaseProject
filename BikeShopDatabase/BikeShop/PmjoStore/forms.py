@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm, Form, ChoiceField
-from .models import Store, Customers, Orders, CartItems, StockList
+from .models import BikeBrands, BikeProducts, StockList, Store, Customers, Orders, CartItems
 
 
 class StoreForm(ModelForm):
@@ -21,7 +21,24 @@ class OrderForm(ModelForm):
         model = Orders
         fields = '__all__'
 
+      
+class BrandForm(ModelForm):
+    class Meta:
+        model = BikeBrands
+        fields = '__all__'
 
+    
+class ProductsForm(ModelForm):
+    class Meta:
+        model = BikeProducts
+        fields = '__all__'
+
+class StocksForm(ModelForm):
+    class Meta:
+        model = StockList
+        fields = '__all__'
+        
+        
 # class OrderForm(Form):
 #     bikes = forms.Choicefield(choices=getMyChoices())
 #
