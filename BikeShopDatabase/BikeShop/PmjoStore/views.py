@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.views.generic import CreateView, DetailView
 
 from .models import Store, Customers, Orders, CartItems, StockList, StoreEmployees, BikeProducts
-from .forms import StoreForm, CustomerForm, OrderForm, CartItemsForm
+from .forms import BrandForm, StoreForm, CustomerForm, OrderForm, CartItemsForm
 from django.db.models import F
 from django.db.models import Q
 
@@ -99,6 +99,26 @@ def deleteCustomer(request, pk):
         return redirect('/')
     context = {'object': customer}
     return render(request, 'PmjoStore/delete_object.html', context)
+
+
+def stockCtrl(request):
+    stock = StockList.objects.all()
+    stores = Store.objects.all()
+    context = {'stock': stock, 'stores': stores}
+    return render(request, "PmjoStore/stock_ctrl_panel.html", context)
+
+
+def addBrand(request):
+    form = BrandForm()
+
+    if request.method == 'POST':
+        form = BrandForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    context = {'form': form}
+    return render(request, "PmjoStore/brand_form.html", context)
 
 
 def orders(request):

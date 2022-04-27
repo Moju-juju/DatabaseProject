@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm, Form, ChoiceField
-from .models import Store, Customers, Orders, CartItems
+from .models import BikeBrands, Store, Customers, Orders, CartItems
 
 
 class StoreForm(ModelForm):
@@ -33,3 +33,9 @@ class CartItemsForm(ModelForm):
     class Meta:
         model = CartItems
         fields = ('bike_prod_id', 'quantity_sold',)
+
+
+class BrandForm(ModelForm):
+    class Meta:
+        model = BikeBrands
+        fields = '__all__'

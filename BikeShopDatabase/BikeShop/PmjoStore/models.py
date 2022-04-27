@@ -9,30 +9,30 @@ from localflavor.us.models import USStateField
 
 
 YEAR_CHOICES = [(r,r)for r in range(2000, datetime.date.today().year+1)]
-BIKE_CATIES = (
-    ('mountain_bike', 'Mountain Bike'),
-    ('road_bike', 'Road Bike'),
-    ('touring_bike', 'Touring Bike'),
-    ('folding_bike', 'Folding Bike'),
-    ('track_bike', 'Track Bike'),
-    ('cruiser', 'Cruiser'),
-    ('bmx', 'BMX'),
-    ('recumbent', 'Recumbent'),
-    ('utility', 'Utility'),
-    ('trike', 'Trike'),
-)
+# BIKE_CATIES = (
+#     ('mountain_bike', 'Mountain Bike'),
+#     ('road_bike', 'Road Bike'),
+#     ('touring_bike', 'Touring Bike'),
+#     ('folding_bike', 'Folding Bike'),
+#     ('track_bike', 'Track Bike'),
+#     ('cruiser', 'Cruiser'),
+#     ('bmx', 'BMX'),
+#     ('recumbent', 'Recumbent'),
+#     ('utility', 'Utility'),
+#     ('trike', 'Trike'),
+# )
 
-BIKE_BRANDS = (
-    ('giant_bikes', 'Giant Bikes'),
-    ('trek_bikes', 'Trek Bikes'),
-    ('specialized', 'Specialized'),
-    ('santa_cruz', 'Santa Cruz'),
-    ('gt', 'GT'),
-    ('yeti', 'Yeti'),
-    ('cannondale', 'Cannondale'),
-    ('marin', 'Marin'),
-    ('diamondback', 'DiamondBack'),
-)
+# BIKE_BRANDS = (
+#     ('giant_bikes', 'Giant Bikes'),
+#     ('trek_bikes', 'Trek Bikes'),
+#     ('specialized', 'Specialized'),
+#     ('santa_cruz', 'Santa Cruz'),
+#     ('gt', 'GT'),
+#     ('yeti', 'Yeti'),
+#     ('cannondale', 'Cannondale'),
+#     ('marin', 'Marin'),
+#     ('diamondback', 'DiamondBack'),
+# )
 
 
 # Create your models here (These are our database tables).
@@ -120,20 +120,20 @@ class Customers(Base):
 
 
 class BikeCategory(Base):
-    category = models.CharField(max_length=100, choices=BIKE_CATIES, unique=True)
+    category = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
-        return dict(BIKE_CATIES).get(self.category)
+        return self.category
 
     class Meta:
         verbose_name_plural = 'Bike Categories'
 
 
 class BikeBrands(Base):
-    brand = models.CharField(max_length=100, choices=BIKE_BRANDS, unique=True)
+    brand = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
-        return dict(BIKE_BRANDS).get(self.brand)
+        return self.brand
 
     class Meta:
         verbose_name_plural = 'Bike Brands'
@@ -147,7 +147,7 @@ class BikeProducts(Base):
     price = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return '{} {} {}'.format(self.model_year, dict(BIKE_BRANDS).get(self.bike_brand_id.brand),
+        return '{} {} {}'.format(self.model_year, self.bike_brand_id.brand,
                               self.name)
 
     class Meta:

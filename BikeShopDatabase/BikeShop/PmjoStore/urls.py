@@ -21,5 +21,7 @@ urlpatterns = [
     path('update-order/<str:pk>/add-item/', views.add_item_to_order, name="add_item_to_order"),
     path('delete-order/<str:pk>/', views.deleteOrder, name="delete-order"),
     path('lookup/', views.searchPage, name="lookup-page"),
+    path('stock-controls/', views.stockCtrl, name="stock-controls"),
+    path('stock-controls/add-brand/', views.addBrand, name="add-brand"),
     #path('orderDetails/<str:pk>/', views.OrderDetails.as_view(), name="order_details"),
 ]

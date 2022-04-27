@@ -1,0 +1,8 @@
+{% extends 'main.html' %}
+{% block content %}
+
+    <a href="{% url 'PmjoStore:add-brand' %}" type="button" class="btn btn-primary">Add Brands</a>
+    <a href="{% url 'PmjoStore:add-order' %}">Place Order</a>
+    <button type="button" class="btn btn-primary" href="{% url 'PmjoStore:add-order' %}">Add Brands</button>
+
+{% endblock content %}
