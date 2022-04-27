@@ -75,7 +75,7 @@ class Store(Base):
     #city = models.CharField(max_length=100, blank=True)
     #state = USStateField(choices=STATE_CHOICES, default='PA')
     #zipCode = models.CharField(max_length=5, blank=True)
-    zipCode_id = models.OneToOneField(ZipCode, on_delete=models.CASCADE, blank=True, default=1)
+    zipCode_id = models.ForeignKey(ZipCode, on_delete=models.CASCADE, blank=True, default=1)
     manager_id = models.OneToOneField(Staff, on_delete=models.CASCADE, blank=True, default=1)
 
     def __str__(self):

@@ -1,6 +1,7 @@
 {% extends 'main.html' %}
 
 {% block content %}
+<h1># of Products Sold</h1>
   <div id="container" style="width: 75%;">
     <canvas id="pie-chart"></canvas>
   </div>
@@ -14,14 +15,14 @@
         datasets: [{
           data: {{ data|safe }},
           backgroundColor: [
-            '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
+            '#8C70FF', '#FFA770', '#7FFFB8', '#7FB1FF', '#FF7F7F'
           ],
           label: 'Sales'
         }],
         labels: {{ labels|safe }}
       },
       options: {
-        responsive: true
+        responsive: true,
       }
     };
 

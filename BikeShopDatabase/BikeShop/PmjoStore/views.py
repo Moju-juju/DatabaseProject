@@ -1,5 +1,7 @@
 import requests
 from django.core.exceptions import ValidationError
+from django.core import serializers
+from django.core.files import File
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views.generic import CreateView, DetailView
@@ -371,6 +373,11 @@ def searchPage(request):
     return render(request, 'PmjoStore/lookup.html', context)
 
 
+def export_to_xml(request):
+    data = serializers.serialize("xml", Orders.objects.all())
+    return HttpResponse(data, content_type="application/xml")
+
+
 def pieChart(request):
     labels = []
     data = []
@@ -379,7 +386,14 @@ def pieChart(request):
     orders = Orders.objects.all()
     for store in queryset:
         labels.append(store.name)
-        sales = Orders.objects.filter(store_staff_id_store_id_id = queryset).count()
+        staff = StoreEmployees.objects.filter(store_id=store)
+        orders = Orders.objects.filter(store_staff_id__in=staff)
+        items = CartItems.objects.filter(order_id__in=orders)
+        print(items)
+        sales = 0
+        for item in items:
+            sales += item.quantity_sold
+
         data.append(sales)
 
     return render(request, 'PmjoStore/pie_chart.html', {
