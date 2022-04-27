@@ -2,7 +2,29 @@
 {% block content %}
 
     <a href="{% url 'PmjoStore:add-brand' %}" type="button" class="btn btn-primary">Add Brands</a>
-    <a href="{% url 'PmjoStore:add-order' %}">Place Order</a>
-    <button type="button" class="btn btn-primary" href="{% url 'PmjoStore:add-order' %}">Add Brands</button>
+    <a href="{% url 'PmjoStore:add-product' %}" type="button" class="btn btn-primary">Add a Product</a>
+    <a href="{% url 'PmjoStore:add-stock' %}" type="button" class="btn btn-primary">Add to Store Inventory</a>
+
+    <form action="{% url 'PmjoStore:stock-controls' %}" method="get">
+        <label for="fromInput#search">Search</label>
+        <input type="text" name="search_query" id="fromInput#search" value="{{search_query}}">
+        <input type="submit" value="Search">
+    </form>
+
+    <table>
+        <tr>
+            <th class="pr-3">Store</th>
+            <th class="pr-3 pl-3">Product</th>
+            <th class="pr-3 pl-3">Quantity</th>
+        </tr>
+        {% for stock in stocks %}
+        <tr>
+            <td class="pr-3">{{stock.store_id}}</td>
+            <td class="pr-3 pl-3">{{stock.bike_prod_id}}</td>
+            <td class="pr-3 pl-3">{{stock.quantity}}</td>
+            <td><a class="button btn btn-primary" href = "{% url 'PmjoStore:update-stock' stock.id %}" >Edit</a></td>
+        </tr>
+        {% endfor %}
+    </table>
 
 {% endblock content %}

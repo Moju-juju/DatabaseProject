@@ -15,6 +15,7 @@ urlpatterns = [
     path('add-customers/', views.createCustomer, name="add-customers"),
     path('update-customer/<str:pk>/', views.updateCustomer, name="update-customer"),
     path('delete-customer/<str:pk>/', views.deleteCustomer, name="delete-customer"),
+    path('customer-purchases/<str:pk>/', views.purchases, name="customer-purchases"),
     path('orders/', views.orders, name="orders-page"),
     path('add-order/', views.CreateOrder, name="add-order"),
     path('update-order/<str:pk>/', views.updateOrder, name="update-order"),
@@ -23,5 +24,9 @@ urlpatterns = [
     path('lookup/', views.searchPage, name="lookup-page"),
     path('stock-controls/', views.stockCtrl, name="stock-controls"),
     path('stock-controls/add-brand/', views.addBrand, name="add-brand"),
+    path('stock-controls/add-product/', views.addProduct, name="add-product"),
+    path('stock-controls/add-stock/', views.addStock, name="add-stock"),
+    path('stock-controls/update-stock/<str:pk>/', views.updateStock, name="update-stock"),
+    path('store-sales/', views.pieChart, name="store-sales"),
     #path('orderDetails/<str:pk>/', views.OrderDetails.as_view(), name="order_details"),
 ]

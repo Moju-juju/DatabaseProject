@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm, Form, ChoiceField
-from .models import BikeBrands, Store, Customers, Orders, CartItems
+from .models import BikeBrands, BikeProducts, StockList, Store, Customers, Orders, CartItems
 
 
 class StoreForm(ModelForm):
@@ -38,4 +38,15 @@ class CartItemsForm(ModelForm):
 class BrandForm(ModelForm):
     class Meta:
         model = BikeBrands
+        fields = '__all__'
+
+    
+class ProductsForm(ModelForm):
+    class Meta:
+        model = BikeProducts
+        fields = '__all__'
+
+class StocksForm(ModelForm):
+    class Meta:
+        model = StockList
         fields = '__all__'

@@ -19,6 +19,7 @@
         <td class="pr-3 pl-3">{{customer.email}}</td>
         <td class="pr-3 pl-3">{{customer.street}}</td>
         <td><a class="button btn btn-primary" href = "{% url 'PmjoStore:update-customer' customer.id %}" >Edit</a></td>
+        <td><a class="button btn btn-info" href = "{% url 'PmjoStore:customer-purchases' customer.id %}" >Purchases</a></td>
         <td><a class="button btn btn-danger" href = "{% url 'PmjoStore:delete-customer' customer.id %}" >Delete</a></td>
     </tr>
     {% endfor %}
