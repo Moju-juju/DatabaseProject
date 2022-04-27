@@ -10,23 +10,23 @@
 
 <table>
     <tr>
-        <th>Store</th>
-        <th>Phone</th>
-        <th>Street</th>
-        <th>City</th>
-        <th>Zip</th>
-        <th>Product</th>
-        <th>Inventory</th>
+        <th class="pr-3">Store</th>
+        <th class="pr-3 pl-3">Phone</th>
+        <th class="pr-3 pl-3">Street</th>
+        <th class="pr-3 pl-3">City</th>
+        <th class="pr-3 pl-3">Zip</th>
+        <th class="pr-3 pl-3">Product</th>
+        <th class="pr-3 pl-3">Inventory</th>
     </tr>
     <tr>
         {% for stockItem in stockItems %}
-        <td>{{stockItem.store_id}}</td>
-        <td>{{stockItem.store_id.phone}}</td>
-        <td>{{stockItem.store_id.street}}</td>
-        <td>{{stockItem.store_id.zipCode_id.city}}</td>
-        <td>{{stockItem.store_id.zipCode_id.zipCode}}</td>
-        <td>{{stockItem.bike_prod_id}}</td>
-        <td>{{stockItem.quantity}}</td>
+        <td class="pr-3">{{stockItem.store_id}}</td>
+        <td class="pr-3 pl-3">{{stockItem.store_id.phone}}</td>
+        <td class="pr-3 pl-3">{{stockItem.store_id.street}}</td>
+        <td class="pr-3 pl-3">{{stockItem.store_id.zipCode_id.city}}</td>
+        <td class="pr-3 pl-3">{{stockItem.store_id.zipCode_id.zipCode}}</td>
+        <td class="pr-3 pl-3">{{stockItem.bike_prod_id}}</td>
+        <td class="pr-3 pl-3">{{stockItem.quantity}}</td>
     </tr>
         {% endfor %}
 </table>

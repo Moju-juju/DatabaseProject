@@ -104,7 +104,7 @@ def deleteCustomer(request, pk):
 
 def purchases(request, pk):
     customer = Customers.objects.get(id=pk)
-    orders =  Orders.objects.filter(cust_id=customer)
+    orders =  Orders.objects.filter(cust_id_id=customer)
     print(orders)
     items = CartItems.objects.all()
     context = {'customer': customer, 'orders:': orders, 'items': items}
@@ -129,15 +129,10 @@ def stockCtrl(request):
 
     if request.GET.get('search_query'):
         search_query = request.GET.get('search_query')
-    print('SEARCH:', search_query)
 
     stores = Store.objects.filter(name__icontains=search_query)
-    print(stores)
     storeID = Store.objects.filter(name=stores)
-    #print(bikeID)
-
     stocks = StockList.objects.filter(store_id_id__in=stores).order_by('store_id')
-    print([p for p in stocks])
 
     context = {'stocks': stocks, 'search_query': search_query}
     return render(request, 'PmjoStore/stock_ctrl_panel.html', context)

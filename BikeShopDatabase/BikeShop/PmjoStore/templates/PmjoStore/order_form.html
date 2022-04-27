@@ -10,6 +10,7 @@
 
     {% for order in orders %}
     <a class="btn btn-primary mb-1" href="{% url 'PmjoStore:add_item_to_order' pk=order.pk %}">Add Item</a>
+    <a class="btn btn-primary mb-1" href="{% url 'PmjoStore:orders-page' %}">Done</a>
     <p>
         <label for="id_order.cust_id">Customer:</label>
         <input type="text" name="name" value = "{{order.cust_id}}" maxlength="100" required id = "id_order.cust_id">
