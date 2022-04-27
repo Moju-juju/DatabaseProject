@@ -29,5 +29,6 @@ urlpatterns = [
     path('stock-controls/update-stock/<str:pk>/', views.updateStock, name="update-stock"),
     path('store-sales/', views.pieChart, name="store-sales"),
     path('application/xml', views.export_to_xml, name="xml"),
+    path('staff-sales/', views.staff, name="staff-sales"),
     #path('orderDetails/<str:pk>/', views.OrderDetails.as_view(), name="order_details"),
 ]

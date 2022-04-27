@@ -2,27 +2,56 @@
 {% block content %}
 
 <h1>{{customer.first_name}} {{customer.last_name}}</h1>
+<table>
+    <tr>
+        <th class="pr-3">Store</th>
+        <th class="pr-3 pl-3">Staff</th>
+        <th class="pr-3 pl-3">Products</th>
+        <th class="pr-3 pl-3">Total Price</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td class="pr-3">{{order.store_staff_id.store_id}}</td>
+        <td class="pr-3 pl-3">{{order.store_staff_id.staff_id}}</td>
+        <td class="pr-3 pl-3">
+             {% for item in items %}
+                {% if item.order_id.id == order.id %}
+                {{item.bike_prod_id}}
+                {% endif %}
+            {% endfor %}
+        </td>
+        <td class="pr-3 pl-3">
+             {% for orderPrice in orderPrices %}
+                {{orderPrice}}
+            {% endfor %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
 
-    <table>
-        <tr>
-            <th class="pr-3">Store</th>
-            <th class="pr-3 pl-3">Staff</th>
-            <th class="pr-3 pl-3">Products</th>
-            <th class="pr-3 pl-3">Price</th>
-        </tr>
-        {% for order in orders %}
-        <!-- {% if order.cust_id.id == customer %} -->
-        <tr>
-            <td class="pr-3">{{order.store_staff_id.store_id}}</td>
-            <td class="pr-3 pl-3">{{order.store_staff_id.staff_id}}</td>
-            <td class="pr-3 pl-3">{% for item in items %}
-            {% if item.order_id.id == order.id %}
-            {{item.bike_prod_id}}
-            {% endif %}
-            {% endfor %}</td>
-            </tr>
-        <!-- {% endif %} -->
-        {% endfor %}
-    </table>
+
+
+<!--    <table>-->
+<!--        <tr>-->
+<!--            <th class="pr-3">Store</th>-->
+<!--            <th class="pr-3 pl-3">Staff</th>-->
+<!--            <th class="pr-3 pl-3">Products</th>-->
+<!--            <th class="pr-3 pl-3">Price</th>-->
+<!--        </tr>-->
+<!--        {% for order in orders %}-->
+<!--        &lt;!&ndash; {% if order.cust_id.id == customer %} &ndash;&gt;-->
+<!--        <tr>-->
+<!--&lt;!&ndash;           <td>{{order.store_staff_id}}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;           <td>{{order.store_staff_id.staff_id}}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;            <td>{% for item in items %}&ndash;&gt;-->
+<!--&lt;!&ndash;           {% if item.order_id.id == order.id %}&ndash;&gt;-->
+<!--&lt;!&ndash;           {{item.bike_prod_id}}&ndash;&gt;-->
+<!--&lt;!&ndash;           {% endif %}&ndash;&gt;-->
+<!--&lt;!&ndash;           {% endfor %}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;            </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;        &lt;!&ndash; {% endif %} &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        {% endfor %}&ndash;&gt;-->
+<!--    </table>-->
+
 
 {% endblock content %}

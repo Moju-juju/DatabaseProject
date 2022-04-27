@@ -103,13 +103,42 @@ def deleteCustomer(request, pk):
     context = {'object': customer}
     return render(request, 'PmjoStore/delete_object.html', context)
 
+def staff(request):
+    sales=[]
+
+    employees = StoreEmployees.objects.all()
+    for employee in employees:
+        orders = Orders.objects.filter(store_staff_id=employee)
+        items = CartItems.objects.filter(order_id__in=orders)
+
+        salesCount = 0
+        for item in items:
+            salesCount += item.quantity_sold
+
+        sales.append(salesCount)
+    context = {'employees': employees, 'sales': sales}
+    return render(request, 'PmjoStore/staff.html', context)
 
 def purchases(request, pk):
     customer = Customers.objects.get(id=pk)
-    orders =  Orders.objects.filter(cust_id_id=customer)
-    print(orders)
-    items = CartItems.objects.all()
-    context = {'customer': customer, 'orders:': orders, 'items': items}
+    print(customer)
+    orders =  Orders.objects.filter(cust_id=customer)
+    items = CartItems.objects.filter(order_id__in=orders)
+    #print("ITEMS: ", items)
+    orderPrices =[]
+    prices = 0
+    for order in orders:
+        cartItems = CartItems.objects.filter(order_id=order)
+
+        for cartItem in cartItems:
+            prices += cartItem.bike_prod_id.price * cartItem.quantity_sold
+    orderPrices.append(prices)
+    prices = 0
+    # for item in items:
+    #     if item.order_id.id == order.id
+    # {{item.bike_prod_id.price}}
+
+    context = {'customer': customer, 'orders': orders, 'items': items, 'orderPrices': orderPrices}
     return render(request, 'PmjoStore/cust_purch.html', context)
 
 
@@ -180,7 +209,7 @@ def addProduct(request):
 
 
 def orders(request):
-    orders = Orders.objects.all()
+    orders = Orders.objects.all().order_by('cust_id')
     items = CartItems.objects.all()
     context = {'orders': orders, 'items': items}
     return render(request, "PmjoStore/orders.html", context)
@@ -343,7 +372,7 @@ def deleteOrder(request, pk):
         order.delete()
         return redirect('/')
     context = {'object': order}
-    return render(request, 'PmjoStore/delete_object.html', context)
+    return render(request, 'PmjoStore/delete_store.html', context)
 
 
 def searchPage(request):
@@ -383,7 +412,7 @@ def pieChart(request):
     data = []
 
     queryset = Store.objects.all()
-    orders = Orders.objects.all()
+
     for store in queryset:
         labels.append(store.name)
         staff = StoreEmployees.objects.filter(store_id=store)
@@ -398,8 +427,10 @@ def pieChart(request):
 
     return render(request, 'PmjoStore/pie_chart.html', {
         'labels': labels,
-        'data':data,
+        'data': data,
     })
+
+
 
 
 
