@@ -1,6 +1,8 @@
 import datetime
 import uuid
 
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.urls import reverse
 from phone_field import PhoneField
@@ -186,7 +188,10 @@ class CartItems(Base):
 class StockList(Base):
     store_id = models.ForeignKey(Store, on_delete=models.CASCADE, blank=True, default=1)
     bike_prod_id = models.ForeignKey(BikeProducts, on_delete=models.CASCADE, blank=True, default=1)
-    quantity = models.PositiveIntegerField(default=0)
+    quantity = models.PositiveIntegerField(default=1)
+
+    class Meta:
+        unique_together = ('store_id', 'bike_prod_id')
 
     def __str__(self):
         return '{} - {} - {}'.format(self.store_id, self.bike_prod_id, self.quantity)
