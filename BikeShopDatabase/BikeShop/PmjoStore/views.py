@@ -132,8 +132,11 @@ def purchases(request, pk):
 
         for cartItem in cartItems:
             prices += cartItem.bike_prod_id.price * cartItem.quantity_sold
-    orderPrices.append(prices)
-    prices = 0
+        
+        disc = prices * (order.discount / 100)
+        prices -= disc
+        orderPrices.append(prices)
+        prices = 0
     # for item in items:
     #     if item.order_id.id == order.id
     # {{item.bike_prod_id.price}}

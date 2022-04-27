@@ -66,7 +66,7 @@ class CartItemsForm(ModelForm):
         stockListQuantity = selected_StockList.quantity
 
         if int(quantitySold) > stockListQuantity:
-            raise ValidationError("FUCK OFF")
+            raise ValidationError("NOT ENOUGH IN STOCK")
         else:
             selected_StockList.quantity = (selected_StockList.quantity - quantitySold)
             selected_StockList.save()
