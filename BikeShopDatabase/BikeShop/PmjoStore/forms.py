@@ -1,6 +1,7 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from django.forms import ModelForm, Form, ChoiceField
-from .models import Store, Customers, Orders, CartItems
+from .models import Store, Customers, Orders, CartItems, StockList
 
 
 class StoreForm(ModelForm):
@@ -32,4 +33,25 @@ class OrderForm(ModelForm):
 class CartItemsForm(ModelForm):
     class Meta:
         model = CartItems
-        fields = ('bike_prod_id', 'quantity_sold',)
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(CartItemsForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super(CartItemsForm, self).clean()
+
+        selected_BikeProdID = cleaned_data['bike_prod_id']
+        order = cleaned_data['order_id']
+        selected_StockList = StockList.objects.get(store_id=order.store_staff_id.store_id,
+                                                   bike_prod_id=selected_BikeProdID)
+        quantitySold = cleaned_data['quantity_sold']
+        stockListQuantity = selected_StockList.quantity
+
+        if int(quantitySold) > stockListQuantity:
+            raise ValidationError("FUCK OFF")
+        else:
+            selected_StockList.quantity = (selected_StockList.quantity - quantitySold)
+            selected_StockList.save()
+
+        return cleaned_data

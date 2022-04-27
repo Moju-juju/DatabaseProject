@@ -1,4 +1,5 @@
 import requests
+from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views.generic import CreateView, DetailView
@@ -122,24 +123,28 @@ def CreateOrder(request):
 
 def add_item_to_order(request, pk):
     order = Orders.objects.get(id=pk)
-
     if request.method == 'POST':
-        form = CartItemsForm(request.POST or None)
+        form = CartItemsForm(request.POST or None, initial={'order_id': order})
+
         if form.is_valid():
-            form.instance.order_id = order
-            item = form.save(commit=False)
-            item.save()
+            form.save()
+
             return redirect('PmjoStore:update-order', pk=order.pk)
     else:
         form = CartItemsForm()
         stock_lists = StockList.objects.filter(store_id=order.store_staff_id.store_id)
         bike_prod_ids = []
-
         for stock_list in stock_lists:
             bike_prod_ids.append(stock_list.bike_prod_id.id)
 
         bike_products = BikeProducts.objects.filter(id__in=bike_prod_ids)
         form.fields['bike_prod_id'].queryset = bike_products
+        #form.fields['order_id'].initial = order
+    # if 'addItems' in request.POST:
+    #     quantitySold = request.POST['quantity_sold']
+    #     # stock_lists.quantity = F('quantity') - quantitySold
+    #     # stock_lists.save()
+    #     print("quantity sold", quantitySold)
 
     return render(request, 'PmjoStore/add_item.html', {'form': form})
 
